@@ -1,0 +1,16 @@
+server:
+  port: 8761
+
+# id сервера-приложения eureka
+spring:
+  application:
+    name: eureka-server
+
+# т.к. это не клиент, убираем лишние настройки
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    # url, где будет происходить регистрация микросервисов и другие важные действия
+    service-url:
+      default: http://localhost:8761/eureka

@@ -1,0 +1,42 @@
+server:
+  port: 8082
+
+# id сервера-приложения eureka
+spring:
+  application:
+    name: ApiGatewayService
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes[0]:
+          id: booking
+          uri: http://localhost:8083
+          predicates:
+            - Path=/booking/**
+          filters:
+            - RewritePath=/booking/(?<remaining>.*),/$\{remaining}
+      routes[1]:
+        id: user
+        uri: http://localhost:8084
+        predicates:
+          - Path=/user/**
+        filters:
+          - RewritePath=/user/(?<remaining>.*),/$\{remaining}
+      routes[2]:
+        id: room
+        uri: http://localhost:8085
+        predicates:
+          - Path=/room/**
+        filters:
+          - RewritePath=/room/(?<remaining>.*),/$\{remaining}
+
+
+# url, где будет происходить регистрация микросервисов и другие важные действия
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
